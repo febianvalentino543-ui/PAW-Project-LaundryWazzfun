@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wazzfun Laundry - Solusi Cuci Bersih, Rapi & AI Express</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Header Utama & Navigasi -->
+    <header>
+        <div class="logo-container">
+            <img src="/Assets/logo.png" alt="logo wazzfun">
+            <div class="brand-text">
+                <h1>Wazzfun Laundry</h1>
+                <p>BANDUNG • EXPRESS & QUALITY</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#hero" class="nav-btn active">Pelanggan</a>
+            <a href="/pegawai" class="nav-btn">Portal Pegawai</a>
+            <a href="#owner" class="nav-btn">Owner Dashboard</a>
+        </nav>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+        <!-- Seksi Hero & Cek Status Cucian -->
+        <section id="hero" class="hero-section">
+            <div class="hero-left">
+                <span class="badge-tag">Terintegrasi AI Assistant & WhatsApp Realtime</span>
+                <h2>Cucian Bersih, Rapi & Ketepatan Waktu Terjamin.</h2>
+                <p>Wazzfun Laundry hadir di Bandung dengan layanan express berkualitas tinggi. Cek status cucian secara instan melalui sistem otomatis WhatsApp AI tanpa perlu menunggu lama.</p>
+                
+                <!-- Form Cek Status Instan -->
+                <form id="formCekStatus" action="#" method="GET" class="search-box">
+                    <div class="input-wrapper">
+                        <input type="text" id="idNota" name="idNota" placeholder="Masukkan ID Nota (contoh: WZ-1001)" required>
+                        <button type="submit" class="btn-primary">Cek Status &rarr;</button>
+                    </div>
+                </form>
+                <p class="hint-text">💡 Coba ketik ID Nota: <strong>WZ-1001</strong> atau <strong>WZ-1002</strong></p>
+            </div>
+
+            <!-- Card Demo Preview WhatsApp AI Realtime -->
+            <div class="hero-right">
+                <div class="status-preview-card">
+                    <div class="card-header">
+                        <div class="status-bot-info">
+                            <span class="icon-wa">💬</span>
+                            <div>
+                                <h3>AI WhatsApp Status Bot</h3>
+                                <p>Respon Otomatis &lt; 2 Detik</p>
+                            </div>
+                        </div>
+                        <span class="badge-online">Aktif</span>
+                    </div>
+
+                    <div class="card-body">
+                        <span class="sub-label">CONTOH STATUS REALTIME</span>
+                        <div class="order-info-header">
+                            <h4>Pesanan #WZ-1001 (Bpk. Agus)</h4>
+                            <span class="badge-status-progress">👕 Sedang Disetrika</span>
+                        </div>
+                        <p class="order-detail-text">2 Pasang Pakaian Satuan & 3kg Kiloan Express</p>
+                        
+                        <!-- Step Progress Indicator -->
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar-fill" style="width: 75%;"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <span class="step completed">Diterima</span>
+                            <span class="step completed">Dicuci</span>
+                            <span class="step active">Disetrika</span>
+                            <span class="step">Siap Diambil</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <p>⏰ Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seksi Daftar Layanan & Harga -->
+        <section id="layanan" class="card-section">
+            <div class="section-title text-center">
+                <span class="badge-tag-alt">DAFTAR LAYANAN & HARGA</span>
+                <h2>Pilihan Paket Cuci Berkualitas</h2>
+                <p>Pilihan layanan terlengkap sesuai kebutuhan pakaian harian hingga perawatan khusus Anda.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Paket 1: Kiloan -->
+                <div class="price-card">
+                    <div class="card-icon">⚖️</div>
+                    <h3>Cuci Lipat Kiloan</h3>
+                    <p class="desc">Pakaian harian, sudah termasuk cuci, pengering, dan lipat rapi.</p>
+                    <div class="price">Rp 7.000 <span>/ kg</span></div>
+                    <ul class="feature-list">
+                        <li>✓ Proses 2 hari kerja</li>
+                        <li>✓ Detergen Anti-Bakteri</li>
+                        <li>✓ Gratis Parfum Laundry</li>
+                    </ul>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Cuci%20Lipat%20Kiloan" class="btn-card" target="_blank">Pesan via WA</a>
+                </div>
+
+                <!-- Paket 2: Express 24 Jam (Paling Laris) -->
+                <div class="price-card featured">
+                    <span class="badge-popular">PALING LARIS</span>
+                    <div class="card-icon">⚡</div>
+                    <h3>Express Setrika 24 Jam</h3>
+                    <p class="desc">Solusi cepat untuk pakaian mendesak yang butuh segera dipakai.</p>
+                    <div class="price">Rp 10.000 <span>/ kg</span></div>
+                    <ul class="feature-list">
+                        <li>✓ Selesai dalam 24 Jam</li>
+                        <li>✓ Setrika Uap Rapi</li>
+                        <li>✓ Notifikasi Otomatis WA</li>
+                    </ul>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Express%20Setrika%2024%20Jam" class="btn-card btn-primary-card" target="_blank">Pesan Express</a>
+                </div>
+
+                <!-- Paket 3: Premium Satuan -->
+                <div class="price-card">
+                    <div class="card-icon">👔</div>
+                    <h3>Cuci Satuan Premium</h3>
+                    <p class="desc">Perawatan khusus jas, gaun, kemeja, dan pakaian kesayangan.</p>
+                    <div class="price">Mulai Rp 15rb <span>/ pcs</span></div>
+                    <ul class="feature-list">
+                        <li>✓ Treatment Anti-Noda</li>
+                        <li>✓ Hanger & Plastik Pelindung</li>
+                        <li>✓ Garansi Bebas Bau</li>
+                    </ul>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Cuci%20Satuan%20Premium" class="btn-card" target="_blank">Pesan Satuan</a>
+                </div>
+
+                <!-- Paket 4: Bedcover & Sepatu -->
+                <div class="price-card">
+                    <div class="card-icon">🛏️</div>
+                    <h3>Bedcover & Sepatu</h3>
+                    <p class="desc">Pembersihan mendalam item berat dan perlengkapan rumah.</p>
+                    <div class="price">Mulai Rp 35rb</div>
+                    <ul class="feature-list">
+                        <li>✓ Bedcover Jumbo / Medium</li>
+                        <li>✓ Deep Clean Sepatu Sneaker</li>
+                        <li>✓ Pengeringan Bebas Lembap</li>
+                    </ul>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Bedcover%20%26%20Sepatu" class="btn-card" target="_blank">Pesan Khusus</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seksi Form Input/Registrasi Pesanan Baru (Untuk Pelanggan / Pegawai) -->
+        <section id="form-pesanan" class="card-section">
+            <h2>Form Input Pesanan Laundry</h2>
+            <p>Masukkan data pelanggan di bawah ini untuk mendaftarkan antrean cuci baru ke sistem monitoring pegawai.</p>
+
+            <form id="orderForm" action="#" method="POST">
+                <div class="form-group">
+                    <label for="namaPelanggan">Nama Pelanggan</label>
+                    <input type="text" id="namaPelanggan" name="namaPelanggan" placeholder="Masukkan nama lengkap pelanggan" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nomorWa">Nomor WhatsApp</label>
+                    <input type="tel" id="nomorWa" name="nomorWa" placeholder="Contoh: 081234567890" required>
+                </div>
+
+                <fieldset>
+                    <legend>Pilih Jenis Paket Laundry</legend>
+                    <div class="radio-stack">
+                        <label><input type="radio" name="paket_laundry" value="kiloan_2hari" required> Cuci Lipat Kiloan (Reguler 2 Hari - Rp 7.000/kg)</label>
+                        <label><input type="radio" name="paket_laundry" value="express_1hari"> Express Setrika 24 Jam (1 Hari - Rp 10.000/kg)</label>
+                        <label><input type="radio" name="paket_laundry" value="satuan_premium"> Cuci Satuan Premium (Jas / Gaun / Kemeja)</label>
+                        <label><input type="radio" name="paket_laundry" value="khusus_bedcover"> Bedcover & Sepatu (Deep Clean)</label>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="catatan">Catatan / Est. Berat (Opsional)</label>
+                    <textarea id="catatan" name="catatan" rows="3" placeholder="Contoh: 3 kg, jangan dicampur pakaian putih"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Kirim Pesanan & Hubungkan ke WA</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Utama -->
+    <footer>
+        <p>&copy; 2026 Wazzfun Laundry - AI Asisten untuk UMKM. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <!-- Script Integrasi Sederhana -->
+    <script>
+        // Tangkap Submit Form Pesanan untuk Redirect Automatis ke WhatsApp dengan Format Teks
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nama = document.getElementById('namaPelanggan').value;
+            const wa = document.getElementById('nomorWa').value;
+            const paket = document.querySelector('input[name="paket_laundry"]:checked').value;
+            const catatan = document.getElementById('catatan').value;
+
+            // Format Pesan Otomatis yang dibaca AI Agent/Chatbot Backend
+            const pesanWA = `Halo Wazzfun Laundry, saya ingin mendaftarkan pesanan baru:%0A` +
+                            `- Nama: ${encodeURIComponent(nama)}%0A` +
+                            `- No WA: ${encodeURIComponent(wa)}%0A` +
+                            `- Paket: ${encodeURIComponent(paket)}%0A` +
+                            `- Catatan: ${encodeURIComponent(catatan)}`;
+
+            // Nomor WA Tujuan (Nomor AI Bot Laundry)
+            const noBotWA = "6281234567890"; 
+            
+            // Buka WhatsApp Web / App
+            window.open(`https://wa.me/${noBotWA}?text=${pesanWA}`, '_blank');
+        });
+    </script>
+</body>
+</html>
