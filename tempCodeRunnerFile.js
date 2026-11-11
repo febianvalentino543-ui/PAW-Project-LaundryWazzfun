@@ -25,6 +25,17 @@ app.use(logger);
 // 5. Pasang Routing Utama Aplikasi
 app.use('/', routes);
 
+const sequelize = require('./config/database');
+
+// Sinkronisasi model database
+sequelize.sync({ alter: true }) // alter: true akan menyesuaikan tabel jika ada perubahan kolom
+    .then(() => {
+        console.log('✅ Database PostgreSQL berhasil disinkronkan (Sequelize)');
+    })
+    .catch(err => {
+        console.error('❌ Gagal sinkronisasi database:', err);
+    });
+
 // 6. Jalankan Server
 app.listen(config.port, () => {
   console.log(`==================================================`);

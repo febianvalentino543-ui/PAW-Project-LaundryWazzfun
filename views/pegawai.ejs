@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
-<link rel="stylesheet" href="/css/pegawai.css">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Monitoring Pegawai - Wazzfun Laundry</title>
-    <link rel="stylesheet" href="/css/monitoring.css">
-<link rel="stylesheet" href="/css/pegawai.css">
+    <title><%= judul %></title>
+    <!-- Menghubungkan CSS Eksternal khusus pegawai -->
+    <link rel="stylesheet" href="/css/pegawai.css">
+</head>
 <body>
 
     <!-- Top Navigation Bar -->
@@ -16,20 +17,17 @@
         </div>
         <div class="user-profile">
             <span class="user-role">Pegawai Shift 1</span>
-            <a href="index.html" class="btn-logout">Ke Landing Page</a>
+            <a href="/" class="btn-logout">Ke Landing Page</a>
         </div>
     </header>
 
     <div class="layout-container">
         <!-- Sidebar Filter Status -->
         <aside class="sidebar">
-            <h3>Filter Antrean</h3>
+            <h3>Menu Navigasi</h3>
             <ul class="filter-list">
-                <li class="filter-item active" data-filter="all">Semua Pesanan <span class="badge-count" id="count-all">3</span></li>
-                <li class="filter-item" data-filter="Diterima">Diterima <span class="badge-count" id="count-diterima">1</span></li>
-                <li class="filter-item" data-filter="Dicuci">Dicuci <span class="badge-count" id="count-dicuci">1</span></li>
-                <li class="filter-item" data-filter="Disetrika">Disetrika <span class="badge-count" id="count-disetrika">1</span></li>
-                <li class="filter-item" data-filter="Siap Diambil">Siap Diambil <span class="badge-count" id="count-siap">0</span></li>
+                <li class="filter-item active"><a href="/pegawai" style="text-decoration:none; color:inherit;">Portal Pegawai</a></li>
+                <li class="filter-item"><a href="/owner" style="text-decoration:none; color:inherit;">Owner Dashboard</a></li>
             </ul>
         </aside>
 
@@ -38,119 +36,65 @@
             <div class="workspace-header">
                 <div>
                     <h1>Daftar Pengerjaan Laundry</h1>
-                    <p>Klik tab status pada card pelanggan untuk memperbarui progres & mengirim WA otomatis.</p>
-                </div>
-                <div class="search-pegawai">
-                    <input type="text" id="searchClient" placeholder="Cari Nama / ID Nota...">
+                    <p>Klik tombol status pada card pelanggan untuk memperbarui progres langsung ke Backend.</p>
                 </div>
             </div>
 
             <!-- List Card Pesanan Pelanggan -->
             <div class="orders-grid" id="ordersContainer">
-                
-                <!-- Item Card 1 -->
-                <div class="order-card" data-id="WZ-1001" data-status="Disetrika">
-                    <div class="card-top">
-                        <div>
-                            <span class="order-id">#WZ-1001</span>
-                            <h3 class="client-name">Bpk. Agus</h3>
-                            <span class="client-phone">📱 081234567890</span>
+                <% pesanan.forEach(item => { %>
+                    <div class="order-card" data-id="<%= item.id %>">
+                        <div class="card-top">
+                            <div>
+                                <span class="order-id">#<%= item.id %></span>
+                                <h3 class="client-name"><%= item.customerName %></h3>
+                                <span class="client-phone">📱 <%= item.phone %></span>
+                            </div>
+                            <span class="status-pill status-diterima" id="badge-<%= item.id %>"><%= item.status %></span>
                         </div>
-                        <span class="status-pill status-disetrika">Disetrika</span>
-                    </div>
 
-                    <div class="card-info">
-                        <p><strong>Paket:</strong> Express Setrika 24 Jam (1 Hari)</p>
-                        <p><strong>Catatan:</strong> 3kg - Jangan dicampur pakaian putih</p>
-                        <p class="time-stamp">⏱️ Masuk: Hari ini, 09:00 WIB</p>
-                    </div>
-
-                    <!-- Interactive Step Progress Action Tabs -->
-                    <div class="step-control">
-                        <label>Update Status Pengerjaan:</label>
-                        <div class="step-buttons">
-                            <button class="btn-step" onclick="updateStatus('WZ-1001', 'Diterima')">Diterima</button>
-                            <button class="btn-step" onclick="updateStatus('WZ-1001', 'Dicuci')">Dicuci</button>
-                            <button class="btn-step active" onclick="updateStatus('WZ-1001', 'Disetrika')">Disetrika</button>
-                            <button class="btn-step btn-complete" onclick="updateStatus('WZ-1001', 'Siap Diambil')">Siap Diambil</button>
+                        <div class="card-info">
+                            <p><strong>Paket:</strong> <%= item.service %></p>
+                            <p><strong>Jumlah/Catatan:</strong> <%= item.weightQty %></p>
+                            <p class="time-stamp">⏱️ Masuk: <%= item.enteredTime %></p>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Item Card 2 -->
-                <div class="order-card" data-id="WZ-1002" data-status="Dicuci">
-                    <div class="card-top">
-                        <div>
-                            <span class="order-id">#WZ-1002</span>
-                            <h3 class="client-name">Ibu Siti</h3>
-                            <span class="client-phone">📱 081987654321</span>
-                        </div>
-                        <span class="status-pill status-dicuci">Dicuci</span>
-                    </div>
-
-                    <div class="card-info">
-                        <p><strong>Paket:</strong> Cuci Lipat Kiloan (2 Hari)</p>
-                        <p><strong>Catatan:</strong> 5kg - Tambah Parfum Extra</p>
-                        <p class="time-stamp">⏱️ Masuk: Hari ini, 10:15 WIB</p>
-                    </div>
-
-                    <div class="step-control">
-                        <label>Update Status Pengerjaan:</label>
-                        <div class="step-buttons">
-                            <button class="btn-step" onclick="updateStatus('WZ-1002', 'Diterima')">Diterima</button>
-                            <button class="btn-step active" onclick="updateStatus('WZ-1002', 'Dicuci')">Dicuci</button>
-                            <button class="btn-step" onclick="updateStatus('WZ-1002', 'Disetrika')">Disetrika</button>
-                            <button class="btn-step btn-complete" onclick="updateStatus('WZ-1002', 'Siap Diambil')">Siap Diambil</button>
+                        <div class="step-control">
+                            <label>Update Status Pengerjaan:</label>
+                            <div class="step-buttons">
+                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Diterima')">Diterima</button>
+                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Dicuci')">Dicuci</button>
+                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Disetrika')">Disetrika</button>
+                                <button class="btn-step btn-complete" onclick="updateStatus('<%= item.id %>', 'Siap Diambil')">Siap Diambil</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Item Card 3 -->
-                <div class="order-card" data-id="WZ-1003" data-status="Diterima">
-                    <div class="card-top">
-                        <div>
-                            <span class="order-id">#WZ-1003</span>
-                            <h3 class="client-name">Mas Rian</h3>
-                            <span class="client-phone">📱 085712344321</span>
-                        </div>
-                        <span class="status-pill status-diterima">Diterima</span>
-                    </div>
-
-                    <div class="card-info">
-                        <p><strong>Paket:</strong> Cuci Satuan Premium</p>
-                        <p><strong>Catatan:</strong> 1 Jas Hitam & 2 Kemeja</p>
-                        <p class="time-stamp">⏱️ Masuk: Hari ini, 11:00 WIB</p>
-                    </div>
-
-                    <div class="step-control">
-                        <label>Update Status Pengerjaan:</label>
-                        <div class="step-buttons">
-                            <button class="btn-step active" onclick="updateStatus('WZ-1003', 'Diterima')">Diterima</button>
-                            <button class="btn-step" onclick="updateStatus('WZ-1003', 'Dicuci')">Dicuci</button>
-                            <button class="btn-step" onclick="updateStatus('WZ-1003', 'Disetrika')">Disetrika</button>
-                            <button class="btn-step btn-complete" onclick="updateStatus('WZ-1003', 'Siap Diambil')">Siap Diambil</button>
-                        </div>
-                    </div>
-                </div>
-
+                <% }); %>
             </div>
         </main>
     </div>
 
-    <!-- Script Simulasi Interaksi Status Pegawai -->
+    <!-- Script Integrasi Update Status ke Backend -->
     <script>
-        function updateStatus(idNota, statusBaru) {
-            // Simulasi perbaruan status oleh pegawai (US-03)
-            alert(`[SIMULASI BACKEND]\nStatus Pesanan ${idNota} diperbarui menjadi: "${statusBaru}".\n\nAI Bot secara otomatis mengirimkan notifikasi WhatsApp ke pelanggan.`);
-            
-            // Pada integrasi nyata: fetch API PUT/POST ke Backend Node.js
-            /*
-            fetch(`/api/orders/${idNota}/status`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: statusBaru })
-            });
-            */
+        async function updateStatus(idNota, statusBaru) {
+            try {
+                const response = await fetch(`/api/pesanan/${idNota}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: statusBaru })
+                });
+                const result = await response.json();
+
+                if (result.sukses) {
+                    alert(`[SUCCESS BACKEND]\nStatus Pesanan ${idNota} berhasil diperbarui menjadi: "${statusBaru}".`);
+                    document.getElementById(`badge-${idNota}`).innerText = statusBaru;
+                } else {
+                    alert('Gagal memperbarui status.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Terjadi kesalahan koneksi server.');
+            }
         }
     </script>
 </body>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= judul %></title>
+    <!-- Menghubungkan CSS Eksternal khusus owner -->
+    <link rel="stylesheet" href="/css/owner.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+        <div class="brand">
+            <span class="brand-icon">👑</span>
+            <h2>Wazzfun Owner Dashboard</h2>
+        </div>
+        <div class="user-profile">
+            <span class="user-role">Bpk. Umuh Muchtar (Owner)</span>
+            <a href="/" class="btn-logout">Ke Landing Page</a>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <!-- Sidebar Navigasi -->
+        <aside class="sidebar">
+            <h3>Menu Navigasi</h3>
+            <ul class="filter-list">
+                <li class="filter-item"><a href="/pegawai" style="text-decoration:none; color:inherit;">Portal Pegawai</a></li>
+                <li class="filter-item active"><a href="/owner" style="text-decoration:none; color:inherit;">Owner Dashboard</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="content-area">
+            <div class="workspace-header">
+                <div>
+                    <h1>Rekap Performa & Monitoring Usaha</h1>
+                    <p>Pantau statistik chatbot AI, rekap pesanan harian, dan tangani eskalasi komplain khusus.</p>
+                </div>
+            </div>
+
+            <!-- Kartu Statistik / Metrik Utama -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div>
+                        <h4 id="stat-total-pesanan"><%= stats.totalPesanan || 12 %></h4>
+                        <p>Total Pesanan Hari Ini</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div>
+                        <h4 id="stat-avg-respon"><%= stats.avgResponBot || '< 2 Detik' %></h4>
+                        <p>Kecepatan Respon AI Bot</p>
+                    </div>
+                </div>
+                <div class="stat-card alert-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div>
+                        <h4 id="stat-eskalasi"><%= stats.totalEskalasi || 2 %></h4>
+                        <p>Komplain / Eskalasi Masuk</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seksi Tabel Rekap & Eskalasi Komplain -->
+            <div class="dashboard-sections-grid">
+                
+                <!-- Kolom Kiri: Log Eskalasi & Chat Khusus Owner (US-05) -->
+                <section class="dashboard-card">
+                    <div class="card-title-box">
+                        <h3>🚨 Log Eskalasi AI (Penanganan Khusus)</h3>
+                        <span class="badge-tag-alt">Butuh Perhatian</span>
+                    </div>
+                    <p class="section-desc">Pesan dari pelanggan yang tidak dapat dijawab oleh AI (misal: komplain pakaian rusak atau layanan khusus) dialihkan langsung ke Anda.</p>
+                    
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Nota</th>
+                                    <th>Pelanggan</th>
+                                    <th>Isi Kendala</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="escalationTableBody">
+                                <% if (locals.eskalasiList && eskalasiList.length > 0) { %>
+                                    <% eskalasiList.forEach(item => { %>
+                                        <tr>
+                                            <td><strong>#<%= item.id %></strong></td>
+                                            <td><%= item.customerName %> <br><small class="text-muted"><%= item.phone %></small></td>
+                                            <td><%= item.issue %></td>
+                                            <td>
+                                                <a href="https://wa.me/<%= item.phone %>?text=Halo%20Bpk/Ibu%20<%= item.customerName %>,%20menanggapi%20kendala%20pesanan%20%23<%= item.id %>..." target="_blank" class="btn-action-wa">Balas WA</a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td><strong>#WZ-1002</strong></td>
+                                        <td>Siti Rahma <br><small class="text-muted">08123456789</small></td>
+                                        <td>Ada noda luntur di kerah kemeja putih.</td>
+                                        <td>
+                                            <a href="https://wa.me/628123456789?text=Halo%20Siti%20Rahma,%20terkait%20kendala%20pesanan%20%23WZ-1002..." target="_blank" class="btn-action-wa">Balas WA</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>#WZ-1005</strong></td>
+                                        <td>Budi Santoso <br><small class="text-muted">08987654321</small></td>
+                                        <td>Minta ubah jadwal pengiriman jam 8 malam.</td>
+                                        <td>
+                                            <a href="https://wa.me/628987654321?text=Halo%20Budi%20Santoso,%20terkait%20pesanan..." target="_blank" class="btn-action-wa">Balas WA</a>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Kolom Kanan: Monitoring Kinerja Pegawai & Sistem -->
+                <section class="dashboard-card">
+                    <div class="card-title-box">
+                        <h3>📊 Performa & Target Metrik (PRD)</h3>
+                        <span class="badge-online">Sistem Stabil</span>
+                    </div>
+                    <p class="section-desc">Evaluasi kesesuaian target metrik operasional (M-01 & M-02).</p>
+
+                    <div class="metric-progress-list">
+                        <div class="metric-item">
+                            <div class="metric-info">
+                                <span>M-01: Waktu Pegawai Update Status (&le; 1 Menit)</span>
+                                <strong class="text-success">Rata-rata: 35 Detik</strong>
+                            </div>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" style="width: 90%; background: #38a169;"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-info">
+                                <span>M-02: Kecepatan Chat Balas Bot (&le; 5 Menit)</span>
+                                <strong class="text-success">Rata-rata: 4 Detik</strong>
+                            </div>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" style="width: 98%; background: #2b6cb0;"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-item">
+                            <div class="metric-info">
+                                <span>Akurasi Chatbot AI (Anti-Hallucination)</span>
+                                <strong class="text-success">100% Data Valid</strong>
+                            </div>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" style="width: 100%; background: #319795;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-mitigasi-box">
+                        <h4>💡 Catatan Mitigasi Risiko:</h4>
+                        <p>Sistem otomatis mengirim pengingat jika ada pesanan yang tertahan di satu status lebih dari 24 jam untuk mencegah komplain keterlambatan.</p>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

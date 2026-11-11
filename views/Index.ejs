@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wazzfun Laundry - Solusi Cuci Bersih, Rapi & AI Express</title>
+    <title><%= judul %></title>
+    <!-- Menghubungkan CSS Eksternal dari folder views/css/style.css -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -11,17 +12,18 @@
     <!-- Header Utama & Navigasi -->
     <header>
         <div class="logo-container">
-            <img src="/Assets/logo.png" alt="logo wazzfun">
+            <!-- Menghubungkan Asset Logo -->
+            <img src="/Assets/logo.png" alt="Wazzfun Laundry Logo" onerror="this.style.display='none'">
             <div class="brand-text">
-                <h1>Wazzfun Laundry</h1>
+                <h1><%= namaToko %></h1>
                 <p>BANDUNG • EXPRESS & QUALITY</p>
             </div>
         </div>
 
         <nav>
-            <a href="#hero" class="nav-btn active">Pelanggan</a>
+            <a href="/" class="nav-btn active">Pelanggan</a>
             <a href="/pegawai" class="nav-btn">Portal Pegawai</a>
-            <a href="#owner" class="nav-btn">Owner Dashboard</a>
+            <a href="/owner" class="nav-btn">Owner Dashboard</a>
         </nav>
     </header>
 
@@ -35,7 +37,7 @@
                 <p>Wazzfun Laundry hadir di Bandung dengan layanan express berkualitas tinggi. Cek status cucian secara instan melalui sistem otomatis WhatsApp AI tanpa perlu menunggu lama.</p>
                 
                 <!-- Form Cek Status Instan -->
-                <form id="formCekStatus" action="#" method="GET" class="search-box">
+                <form id="formCekStatus" onsubmit="handleCekStatus(event)" class="search-box">
                     <div class="input-wrapper">
                         <input type="text" id="idNota" name="idNota" placeholder="Masukkan ID Nota (contoh: WZ-1001)" required>
                         <button type="submit" class="btn-primary">Cek Status &rarr;</button>
@@ -58,17 +60,17 @@
                         <span class="badge-online">Aktif</span>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body" id="result-preview-box">
                         <span class="sub-label">CONTOH STATUS REALTIME</span>
                         <div class="order-info-header">
-                            <h4>Pesanan #WZ-1001 (Bpk. Agus)</h4>
-                            <span class="badge-status-progress">👕 Sedang Disetrika</span>
+                            <h4 id="preview-title">Pesanan #WZ-1001 (Bpk. Agus)</h4>
+                            <span class="badge-status-progress" id="preview-status">👕 Sedang Disetrika</span>
                         </div>
-                        <p class="order-detail-text">2 Pasang Pakaian Satuan & 3kg Kiloan Express</p>
+                        <p class="order-detail-text" id="preview-detail">Express Setrika 24 Jam (3kg)</p>
                         
                         <!-- Step Progress Indicator -->
                         <div class="progress-bar-wrapper">
-                            <div class="progress-bar-fill" style="width: 75%;"></div>
+                            <div class="progress-bar-fill" id="preview-bar" style="width: 75%;"></div>
                         </div>
                         <div class="progress-steps">
                             <span class="step completed">Diterima</span>
@@ -79,7 +81,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <p>⏰ Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong></p>
+                        <p>⏰ Estimasi Selesai: <strong id="preview-est">Hari ini, 17:00 WIB</strong></p>
                     </div>
                 </div>
             </div>
@@ -89,135 +91,266 @@
         <section id="layanan" class="card-section">
             <div class="section-title text-center">
                 <span class="badge-tag-alt">DAFTAR LAYANAN & HARGA</span>
-                <h2>Pilihan Paket Cuci Berkualitas</h2>
-                <p>Pilihan layanan terlengkap sesuai kebutuhan pakaian harian hingga perawatan khusus Anda.</p>
+                <h2>Pilihan Paket & Jenis Layanan</h2>
+                <p>Transparan dan terjangkau untuk kategori pakaian harian serta perlengkapan tidur.</p>
             </div>
 
-            <div class="pricing-grid">
-                <!-- Paket 1: Kiloan -->
-                <div class="price-card">
-                    <div class="card-icon">⚖️</div>
-                    <h3>Cuci Lipat Kiloan</h3>
-                    <p class="desc">Pakaian harian, sudah termasuk cuci, pengering, dan lipat rapi.</p>
-                    <div class="price">Rp 7.000 <span>/ kg</span></div>
-                    <ul class="feature-list">
-                        <li>✓ Proses 2 hari kerja</li>
-                        <li>✓ Detergen Anti-Bakteri</li>
-                        <li>✓ Gratis Parfum Laundry</li>
-                    </ul>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Cuci%20Lipat%20Kiloan" class="btn-card" target="_blank">Pesan via WA</a>
-                </div>
-
-                <!-- Paket 2: Express 24 Jam (Paling Laris) -->
-                <div class="price-card featured">
-                    <span class="badge-popular">PALING LARIS</span>
-                    <div class="card-icon">⚡</div>
-                    <h3>Express Setrika 24 Jam</h3>
-                    <p class="desc">Solusi cepat untuk pakaian mendesak yang butuh segera dipakai.</p>
-                    <div class="price">Rp 10.000 <span>/ kg</span></div>
-                    <ul class="feature-list">
-                        <li>✓ Selesai dalam 24 Jam</li>
-                        <li>✓ Setrika Uap Rapi</li>
-                        <li>✓ Notifikasi Otomatis WA</li>
-                    </ul>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Express%20Setrika%2024%20Jam" class="btn-card btn-primary-card" target="_blank">Pesan Express</a>
-                </div>
-
-                <!-- Paket 3: Premium Satuan -->
-                <div class="price-card">
-                    <div class="card-icon">👔</div>
-                    <h3>Cuci Satuan Premium</h3>
-                    <p class="desc">Perawatan khusus jas, gaun, kemeja, dan pakaian kesayangan.</p>
-                    <div class="price">Mulai Rp 15rb <span>/ pcs</span></div>
-                    <ul class="feature-list">
-                        <li>✓ Treatment Anti-Noda</li>
-                        <li>✓ Hanger & Plastik Pelindung</li>
-                        <li>✓ Garansi Bebas Bau</li>
-                    </ul>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Cuci%20Satuan%20Premium" class="btn-card" target="_blank">Pesan Satuan</a>
-                </div>
-
-                <!-- Paket 4: Bedcover & Sepatu -->
-                <div class="price-card">
-                    <div class="card-icon">🛏️</div>
-                    <h3>Bedcover & Sepatu</h3>
-                    <p class="desc">Pembersihan mendalam item berat dan perlengkapan rumah.</p>
-                    <div class="price">Mulai Rp 35rb</div>
-                    <ul class="feature-list">
-                        <li>✓ Bedcover Jumbo / Medium</li>
-                        <li>✓ Deep Clean Sepatu Sneaker</li>
-                        <li>✓ Pengeringan Bebas Lembap</li>
-                    </ul>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Wazzfun%20Laundry,%20saya%20ingin%20pesan%20paket%20Bedcover%20%26%20Sepatu" class="btn-card" target="_blank">Pesan Khusus</a>
+            <!-- SECTION 1: PAKAIAN -->
+            <div class="catalog-category-box">
+                <h3 class="category-title">👕 Pakaian</h3>
+                <div class="table-responsive">
+                    <table class="catalog-table">
+                        <thead>
+                            <tr>
+                                <th>Paket</th>
+                                <th>Jenis layanan</th>
+                                <th class="text-right">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Reguler (2–3 hari)</td>
+                                <td>Cuci lipat</td>
+                                <td class="text-right">Rp7.000/kg</td>
+                            </tr>
+                            <tr>
+                                <td>Reguler (2–3 hari)</td>
+                                <td>Cuci setrika</td>
+                                <td class="text-right">Rp8.000/kg</td>
+                            </tr>
+                            <tr>
+                                <td>Express (1 hari)</td>
+                                <td>Cuci lipat</td>
+                                <td class="text-right">Rp9.000/kg</td>
+                            </tr>
+                            <tr>
+                                <td>Express (1 hari)</td>
+                                <td>Cuci setrika</td>
+                                <td class="text-right">Rp12.000/kg</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
-        <!-- Seksi Form Input/Registrasi Pesanan Baru (Untuk Pelanggan / Pegawai) -->
-        <section id="form-pesanan" class="card-section">
-            <h2>Form Input Pesanan Laundry</h2>
-            <p>Masukkan data pelanggan di bawah ini untuk mendaftarkan antrean cuci baru ke sistem monitoring pegawai.</p>
+        <!-- Seksi Form Self-Service / Pendaftaran Pesanan Baru -->
+        <section id="form-pesanan" class="card-section" style="margin-top: 3rem;">
+            <div class="section-title text-center">
+                <span class="badge-tag-alt">SELF-SERVICE & INPUT PESANAN</span>
+                <h2>Buat Pesanan Laundry Baru</h2>
+                <p>Lengkapi data di bawah ini untuk mencatat pesanan baru dan menghubungkannya dengan WhatsApp AI Assistant.</p>
+            </div>
 
-            <form id="orderForm" action="#" method="POST">
-                <div class="form-group">
-                    <label for="namaPelanggan">Nama Pelanggan</label>
-                    <input type="text" id="namaPelanggan" name="namaPelanggan" placeholder="Masukkan nama lengkap pelanggan" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="nomorWa">Nomor WhatsApp</label>
-                    <input type="tel" id="nomorWa" name="nomorWa" placeholder="Contoh: 081234567890" required>
-                </div>
-
-                <fieldset>
-                    <legend>Pilih Jenis Paket Laundry</legend>
-                    <div class="radio-stack">
-                        <label><input type="radio" name="paket_laundry" value="kiloan_2hari" required> Cuci Lipat Kiloan (Reguler 2 Hari - Rp 7.000/kg)</label>
-                        <label><input type="radio" name="paket_laundry" value="express_1hari"> Express Setrika 24 Jam (1 Hari - Rp 10.000/kg)</label>
-                        <label><input type="radio" name="paket_laundry" value="satuan_premium"> Cuci Satuan Premium (Jas / Gaun / Kemeja)</label>
-                        <label><input type="radio" name="paket_laundry" value="khusus_bedcover"> Bedcover & Sepatu (Deep Clean)</label>
+            <div class="form-container-card" style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow);">
+                <form id="formInputPesanan" onsubmit="handleSimpanPesanan(event)">
+                        
+                    <!-- 1. Input Nama Pelanggan -->
+                    <div class="form-group">
+                        <label for="inputNama">1. Nama Lengkap Pelanggan</label>
+                        <input type="text" id="inputNama" name="customerName" placeholder="Contoh: Bpk. Umuh Muchtar" required>
+                        <small id="errorNama" style="color: #e53e3e; font-size: 0.8rem; display: none; margin-top: 0.3rem;"></small>
                     </div>
-                </fieldset>
 
-                <div class="form-group">
-                    <label for="catatan">Catatan / Est. Berat (Opsional)</label>
-                    <textarea id="catatan" name="catatan" rows="3" placeholder="Contoh: 3 kg, jangan dicampur pakaian putih"></textarea>
-                </div>
+                    <!-- 2. Nomor WhatsApp -->
+                    <div class="form-group">
+                        <label for="inputWa">2. Nomor WhatsApp Pelanggan</label>
+                        <input type="text" id="inputWa" name="phone" placeholder="Contoh: 628123456789" required>
+                        <small id="errorWa" style="color: #e53e3e; font-size: 0.8rem; display: none; margin-top: 0.3rem;"></small>
+                    </div>
 
-                <button type="submit" class="btn-submit">Kirim Pesanan & Hubungkan ke WA</button>
-            </form>
+                    <!-- 3. Catatan Khusus -->
+                    <div class="form-group">
+                        <label for="inputCatatan">3. Catatan Khusus (Opsional)</label>
+                        <textarea id="inputCatatan" name="catatan" rows="2" placeholder="Contoh: Jangan disikat terlalu keras."></textarea>
+                    </div>
+
+                    <!-- 4. Pilih Paket -->
+                    <div class="form-group">
+                        <label for="pilihPaket">4. Pilih Kategori & Jenis Layanan Paket</label>
+                        <select id="pilihPaket" name="service" class="form-control-select" required>
+                            <option value="" disabled selected>-- Pilih Kategori & Paket Layanan --</option>
+                            <optgroup label="👕 Pakaian (Kiloan)">
+                                <option value="Pakaian - Reguler Cuci Lipat (Rp7.000/kg)|7000">Pakaian: Reguler - Cuci Lipat (Rp7.000/kg)</option>
+                                <option value="Pakaian - Reguler Cuci Setrika (Rp8.000/kg)|8000">Pakaian: Reguler - Cuci Setrika (Rp8.000/kg)</option>
+                                <option value="Pakaian - Express Cuci Setrika (Rp12.000/kg)|12000">Pakaian: Express - Cuci Setrika (Rp12.000/kg)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- 5. Input Berat / Jumlah -->
+                    <div class="form-group">
+                        <label for="inputBerat">5. Input Berat / Jumlah (Kg atau Pcs)</label>
+                        <input type="number" step="0.1" id="inputBerat" name="weightQty" placeholder="Contoh: 3.5" required>
+                        <small id="errorBerat" style="color: #e53e3e; font-size: 0.8rem; display: none; margin-top: 0.3rem;"></small>
+                    </div>
+
+                    <!-- Estimasi Total Biaya -->
+                    <div class="estimation-box" style="background: var(--bg-light); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Estimasi Total Biaya:</span>
+                        <strong id="labelEstimasiTotal" style="font-size: 1.2rem; color: var(--primary-color);">Rp 0</strong>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" class="btn-primary btn-submit" style="width: 100%;">Simpan Pesanan & Kirim Nota ke WhatsApp &rarr;</button>
+                </form>
+            </div>
         </section>
     </main>
 
     <!-- Footer Utama -->
     <footer>
-        <p>&copy; 2026 Wazzfun Laundry - AI Asisten untuk UMKM. Hak Cipta Dilindungi.</p>
+        <p>&copy; 2026 <%= namaToko %>. Hak Cipta Dilindungi.</p>
     </footer>
 
-    <!-- Script Integrasi Sederhana -->
+    <!-- SCRIPT EVENT HANDLING & API FETCH -->
     <script>
-        // Tangkap Submit Form Pesanan untuk Redirect Automatis ke WhatsApp dengan Format Teks
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nama = document.getElementById('namaPelanggan').value;
-            const wa = document.getElementById('nomorWa').value;
-            const paket = document.querySelector('input[name="paket_laundry"]:checked').value;
-            const catatan = document.getElementById('catatan').value;
+        const inputNama = document.getElementById('inputNama');
+        const errorNama = document.getElementById('errorNama');
+        const inputWa = document.getElementById('inputWa');
+        const errorWa = document.getElementById('errorWa');
+        const inputBerat = document.getElementById('inputBerat');
+        const errorBerat = document.getElementById('errorBerat');
+        const pilihPaket = document.getElementById('pilihPaket');
+        const labelEstimasiTotal = document.getElementById('labelEstimasiTotal');
 
-            // Format Pesan Otomatis yang dibaca AI Agent/Chatbot Backend
-            const pesanWA = `Halo Wazzfun Laundry, saya ingin mendaftarkan pesanan baru:%0A` +
-                            `- Nama: ${encodeURIComponent(nama)}%0A` +
-                            `- No WA: ${encodeURIComponent(wa)}%0A` +
-                            `- Paket: ${encodeURIComponent(paket)}%0A` +
-                            `- Catatan: ${encodeURIComponent(catatan)}`;
+        let hargaSatuan = 0;
 
-            // Nomor WA Tujuan (Nomor AI Bot Laundry)
-            const noBotWA = "6281234567890"; 
-            
-            // Buka WhatsApp Web / App
-            window.open(`https://wa.me/${noBotWA}?text=${pesanWA}`, '_blank');
+        // 1. Event Handling: Validasi Nama (Minimal 3 Karakter)
+        inputNama.addEventListener('input', function() {
+            const val = inputNama.value.trim();
+            if (val.length < 3 && val.length > 0) {
+                errorNama.style.display = 'block';
+                errorNama.innerText = `Nama pelanggan minimal 3 karakter (sekarang ${val.length}).`;
+                inputNama.style.borderColor = '#e53e3e';
+            } else {
+                errorNama.style.display = 'none';
+                inputNama.style.borderColor = '#e2e8f0';
+            }
         });
+
+        // 2. Event Handling: Validasi Nomor WhatsApp (Minimal 10 Digit)
+        inputWa.addEventListener('input', function() {
+            const val = inputWa.value.trim();
+            if (val.length < 10 && val.length > 0) {
+                errorWa.style.display = 'block';
+                errorWa.innerText = `Nomor WhatsApp minimal 10 digit (sekarang ${val.length} digit).`;
+                inputWa.style.borderColor = '#e53e3e';
+            } else {
+                errorWa.style.display = 'none';
+                inputWa.style.borderColor = '#e2e8f0';
+            }
+        });
+
+        // 3. Event Handling: Paket Dipilih
+        pilihPaket.addEventListener('change', function() {
+            const parts = pilihPaket.value.split('|');
+            hargaSatuan = parseInt(parts[1]) || 0;
+            hitungTotal();
+        });
+
+        // 4. Event Handling: Validasi Berat (Minimal 1)
+        inputBerat.addEventListener('input', function() {
+            const berat = parseFloat(inputBerat.value) || 0;
+            if (berat < 1 && inputBerat.value !== '') {
+                errorBerat.style.display = 'block';
+                errorBerat.innerText = 'Berat atau jumlah minimal bernilai 1.';
+                inputBerat.style.borderColor = '#e53e3e';
+            } else {
+                errorBerat.style.display = 'none';
+                inputBerat.style.borderColor = '#e2e8f0';
+            }
+            hitungTotal();
+        });
+
+        function hitungTotal() {
+            const berat = parseFloat(inputBerat.value) || 0;
+            const total = hargaSatuan * berat;
+            labelEstimasiTotal.innerText = 'Rp ' + total.toLocaleString('id-ID');
+        }
+
+        // 5. Fetch API: Cek Status Nota
+        async function handleCekStatus(e) {
+            e.preventDefault();
+            const idNota = document.getElementById('idNota').value.trim();
+            
+            try {
+                const response = await fetch(`/api/pesanan/${idNota}`);
+                const result = await response.json();
+
+                if (result.sukses) {
+                    const data = result.data;
+                    document.getElementById('preview-title').innerText = `Pesanan #${data.id} (${data.customerName})`;
+                    document.getElementById('preview-status').innerText = data.status;
+                    document.getElementById('preview-detail').innerText = `${data.service} (${data.weightQty})`;
+                    alert(`Status ditemukan: Pesanan #${data.id} milik ${data.customerName} saat ini berstatus "${data.status}"`);
+                } else {
+                    alert('Maaf, ID Nota tidak ditemukan di sistem.');
+                }
+            } catch (err) {
+                console.error('Gagal mengambil data:', err);
+                alert('Terjadi kesalahan koneksi ke server.');
+            }
+        }
+
+        // 6. Submit Simpan Pesanan (Kirim ke Backend POST /api/pesanan)
+        async function handleSimpanPesanan(e) {
+            e.preventDefault();
+
+            const nama = inputNama.value.trim();
+            const whatsapp = inputWa.value.trim();
+            const catatan = document.getElementById('inputCatatan').value.trim();
+            const paketVal = pilihPaket.value;
+            const berat = inputBerat.value;
+
+            if (!paketVal) {
+                alert('Silakan pilih kategori dan paket layanan terlebih dahulu.');
+                return;
+            }
+
+            if (nama.length < 3) {
+                alert('Nama pelanggan minimal 3 karakter.');
+                return;
+            }
+
+            if (whatsapp.length < 10) {
+                alert('Nomor WhatsApp minimal 10 digit.');
+                return;
+            }
+
+            const [namaPaket, strHarga] = paketVal.split('|');
+            const hargaSatuan = parseInt(strHarga);
+            const totalHarga = hargaSatuan * parseFloat(berat);
+
+            const dataPesananBaru = {
+                customerName: nama,
+                phone: whatsapp,
+                service: namaPaket,
+                weightQty: berat + (namaPaket.includes('Bedcover') ? ' pcs' : ' kg'),
+                totalHarga: totalHarga,
+                catatan: catatan
+            };
+
+            try {
+                const response = await fetch('/api/pesanan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataPesananBaru)
+                });
+
+                const result = await response.json();
+
+                if (result.sukses) {
+                    alert(`[SUKSES] Pesanan #${result.data.id} atas nama ${nama} berhasil disimpan ke Database PostgreSQL!\n\nNota digital & rincian total (Rp ${totalHarga.toLocaleString('id-ID')}) dikirim ke WhatsApp: ${whatsapp}`);
+                    document.getElementById('formInputPesanan').reset();
+                    labelEstimasiTotal.innerText = 'Rp 0';
+                } else {
+                    alert('Gagal menyimpan: ' + result.pesan);
+                }
+            } catch (err) {
+                console.error('Gagal menyimpan pesanan:', err);
+                alert('Terjadi kesalahan koneksi ke server.');
+            }
+        }
     </script>
 </body>
 </html>

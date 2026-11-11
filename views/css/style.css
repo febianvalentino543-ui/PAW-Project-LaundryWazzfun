@@ -465,3 +465,79 @@ footer {
     color: var(--text-muted);
     font-size: 0.9rem;
 }
+
+/* --- Styling Form Input Pesanan Baru --- */
+.form-control-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: #fff;
+    color: var(--text-main, #2d3748);
+    outline: none;
+    cursor: pointer;
+}
+
+.form-control-select:focus {
+    border-color: var(--primary-color, #2b6cb0);
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+/* --- Styling Katalog Section (Tabel Paket & Jenis Layanan) --- */
+.catalog-category-box {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow, 0 4px 20px rgba(0, 0, 0, 0.06));
+}
+
+.category-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.catalog-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.catalog-table th, 
+.catalog-table td {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.catalog-table th {
+    font-weight: 700;
+    color: var(--text-muted, #718096);
+    background-color: var(--bg-light, #f7fafc);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.catalog-table tr:hover td {
+    background-color: rgba(43, 108, 176, 0.02);
+}
+
+.text-right {
+    text-align: right;
+}
