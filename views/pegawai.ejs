@@ -13,7 +13,7 @@
     <header class="top-bar">
         <div class="brand">
             <span class="brand-icon">🧺</span>
-            <h2>Wazzfun Monitoring</h2>
+            <h2>Wazzfun Monitoring & AI Chatbot</h2>
         </div>
         <div class="user-profile">
             <span class="user-role">Pegawai Shift 1</span>
@@ -31,50 +31,87 @@
             </ul>
         </aside>
 
-        <!-- Main Workspace -->
-        <main class="content-area">
-            <div class="workspace-header">
-                <div>
-                    <h1>Daftar Pengerjaan Laundry</h1>
-                    <p>Klik tombol status pada card pelanggan untuk memperbarui progres langsung ke Backend.</p>
+        <!-- Main Workspace (Split View: Orders & WhatsApp AI Simulator) -->
+        <main class="content-area-split">
+            
+            <!-- Kolom Kiri: Daftar Pengerjaan Laundry -->
+            <div class="workspace-orders">
+                <div class="workspace-header">
+                    <div>
+                        <h1>Daftar Pengerjaan Laundry</h1>
+                        <p>Klik tombol status pada card pelanggan untuk memperbarui progres langsung ke Backend.</p>
+                    </div>
+                </div>
+
+                <!-- List Card Pesanan Pelanggan -->
+                <div class="orders-grid" id="ordersContainer">
+                    <% pesanan.forEach(item => { %>
+                        <div class="order-card" data-id="<%= item.id %>">
+                            <div class="card-top">
+                                <div>
+                                    <span class="order-id">#<%= item.id %></span>
+                                    <h3 class="client-name"><%= item.customerName %></h3>
+                                    <span class="client-phone">📱 <%= item.phone %></span>
+                                </div>
+                                <span class="status-pill status-diterima" id="badge-<%= item.id %>"><%= item.status %></span>
+                            </div>
+
+                            <div class="card-info">
+                                <p><strong>Paket:</strong> <%= item.service %></p>
+                                <p><strong>Jumlah/Catatan:</strong> <%= item.weightQty %></p>
+                                <p class="time-stamp">⏱️ Masuk: <%= item.enteredTime %></p>
+                            </div>
+
+                            <div class="step-control">
+                                <label>Update Status Pengerjaan:</label>
+                                <div class="step-buttons">
+                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Diterima')">Diterima</button>
+                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Dicuci')">Dicuci</button>
+                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Disetrika')">Disetrika</button>
+                                    <button class="btn-step btn-complete" onclick="updateStatus('<%= item.id %>', 'Siap Diambil')">Siap Diambil</button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
                 </div>
             </div>
 
-            <!-- List Card Pesanan Pelanggan -->
-            <div class="orders-grid" id="ordersContainer">
-                <% pesanan.forEach(item => { %>
-                    <div class="order-card" data-id="<%= item.id %>">
-                        <div class="card-top">
+            <!-- Kolom Kanan: Simulasi WhatsApp AI Chatbot -->
+            <div class="whatsapp-simulator-wrapper">
+                <div class="wa-mockup-frame">
+                    <!-- WhatsApp Header -->
+                    <div class="wa-header">
+                        <div class="wa-contact-info">
+                            <div class="wa-avatar">🤖</div>
                             <div>
-                                <span class="order-id">#<%= item.id %></span>
-                                <h3 class="client-name"><%= item.customerName %></h3>
-                                <span class="client-phone">📱 <%= item.phone %></span>
+                                <h4>Wazzfun CS Bot</h4>
+                                <span class="wa-status">Online (Gemini AI)</span>
                             </div>
-                            <span class="status-pill status-diterima" id="badge-<%= item.id %>"><%= item.status %></span>
                         </div>
+                        <div class="wa-actions">📎 📞</div>
+                    </div>
 
-                        <div class="card-info">
-                            <p><strong>Paket:</strong> <%= item.service %></p>
-                            <p><strong>Jumlah/Catatan:</strong> <%= item.weightQty %></p>
-                            <p class="time-stamp">⏱️ Masuk: <%= item.enteredTime %></p>
-                        </div>
-
-                        <div class="step-control">
-                            <label>Update Status Pengerjaan:</label>
-                            <div class="step-buttons">
-                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Diterima')">Diterima</button>
-                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Dicuci')">Dicuci</button>
-                                <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Disetrika')">Disetrika</button>
-                                <button class="btn-step btn-complete" onclick="updateStatus('<%= item.id %>', 'Siap Diambil')">Siap Diambil</button>
-                            </div>
+                    <!-- WhatsApp Chat Body -->
+                    <div class="wa-chat-body" id="waChatBody">
+                        <div class="wa-date-divider"><span>Hari Ini</span></div>
+                        <div class="wa-bubble incoming">
+                            Halo! Saya Asisten Virtual Wazzfun Laundry. Ada yang bisa dibantu? Ketik nomor HP member Anda untuk mengecek status pesanan aktif. 😊
+                            <span class="wa-time">11:46</span>
                         </div>
                     </div>
-                <% }); %>
+
+                    <!-- WhatsApp Input Area -->
+                    <div class="wa-footer">
+                        <input type="text" id="waInputMessage" placeholder="Ketik pesan atau No. HP member..." onkeypress="handleWaKeyPress(event)">
+                        <button onclick="sendWaMessage()" class="wa-send-btn">➤</button>
+                    </div>
+                </div>
             </div>
+
         </main>
     </div>
 
-    <!-- Script Integrasi Update Status ke Backend -->
+    <!-- Script Integrasi Update Status ke Backend & WhatsApp AI Chatbot -->
     <script>
         async function updateStatus(idNota, statusBaru) {
             try {
@@ -95,6 +132,79 @@
                 console.error('Error:', err);
                 alert('Terjadi kesalahan koneksi server.');
             }
+        }
+
+        // Fungsi Simulasi Kirim Pesan ke Backend AI Chatbot (/api/chat)
+        async function sendWaMessage() {
+            const inputField = document.getElementById('waInputMessage');
+            const chatBody = document.getElementById('waChatBody');
+            const messageText = inputField.value.trim();
+
+            if (!messageText) return;
+
+            // Dapatkan jam sekarang format HH:MM
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+            // 1. Tampilkan pesan user ke UI WhatsApp
+            const userBubble = document.createElement('div');
+            userBubble.className = 'wa-bubble outgoing';
+            userBubble.innerHTML = `${escapeHtml(messageText)} <span class="wa-time">${timeString}</span>`;
+            chatBody.appendChild(userBubble);
+
+            inputField.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // 2. Tampilkan indikator loading bot
+            const loadingBubble = document.createElement('div');
+            loadingBubble.className = 'wa-bubble incoming loading-bubble';
+            loadingBubble.id = 'botLoading';
+            loadingBubble.innerHTML = `Sedang mengetik...`;
+            chatBody.appendChild(loadingBubble);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            try {
+                // 3. Kirim fetch ke endpoint backend AI
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: messageText })
+                });
+                const data = await response.json();
+
+                // Hapus loading
+                document.getElementById('botLoading').remove();
+
+                // 4. Tampilkan balasan dari Gemini AI
+                const botBubble = document.createElement('div');
+                botBubble.className = 'wa-bubble incoming';
+                botBubble.innerHTML = `${formatBotResponse(data.reply || data.pesan || 'Maaf, terjadi kesalahan pada sistem.')} <span class="wa-time">${timeString}</span>`;
+                chatBody.appendChild(botBubble);
+                chatBody.scrollTop = chatBody.scrollHeight;
+
+            } catch (error) {
+                console.error('Error chat:', error);
+                document.getElementById('botLoading').remove();
+                
+                const errBubble = document.createElement('div');
+                errBubble.className = 'wa-bubble incoming';
+                errBubble.innerHTML = `Maaf, koneksi ke server AI terganggu. <span class="wa-time">${timeString}</span>`;
+                chatBody.appendChild(errBubble);
+            }
+        }
+
+        function handleWaKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendWaMessage();
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function formatBotResponse(text) {
+            return escapeHtml(text).replace(/\n/g, '<br>');
         }
     </script>
 </body>

@@ -61,4 +61,7 @@ router.post('/api/pesanan', laundryController.createPesanan);           // CREAT
 router.put('/api/pesanan/:id/status', laundryController.updateStatusPesanan); // UPDATE STATUS
 router.delete('/api/pesanan/:id', laundryController.deletePesanan);     // DELETE
 
+// Rute API tambahan: /api/chat dan /api/status
+router.use('/api', require('./api'));
+
 module.exports = router;

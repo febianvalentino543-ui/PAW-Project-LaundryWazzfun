@@ -1,3 +1,6 @@
+require('dotenv').config(); // WAJIB di baris paling atas agar .env terbaca
+
+// ... sisa kode app.js kamu
 const express = require('express');
 const path = require('path');
 const config = require('./config/config');
