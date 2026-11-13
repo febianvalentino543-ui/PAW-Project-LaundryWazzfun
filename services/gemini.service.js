@@ -1,4 +1,4 @@
-const { genAI, MODEL_NAME } = require('../config/gemini');
+const { genAI, MODEL_NAME, FALLBACK_MODELS, TIMEOUT_MS } = require('../config/gemini');
 const Pesanan = require('../models/pesanan'); // Model Sequelize -> tabel pesanan_laundry (PostgreSQL)
 
 /**
@@ -70,7 +70,7 @@ async function buildSystemInstruction(userMessage = '') {
       'Jika ia menanyakan status pesanan, minta ia menyebutkan salah satunya.';
   }
 
-  const storeName = process.env.STORE_NAME;
+  const storeName = process.env.STORE_NAME || 'Wazzfun Laundry';
 
   return `Kamu adalah customer service otomatis untuk layanan laundry bernama "${storeName}" (pimpinan Pak Umuh Muchtar).
 Karaktermu ramah, sopan, membantu, dan menggunakan bahasa Indonesia yang santai namun profesional ala layanan pelanggan WhatsApp.
@@ -85,18 +85,45 @@ ${infoPesananContext}`;
 }
 
 /**
+ * Pindah ke model cadangan untuk hampir semua error (503 sibuk, 429 limit, 404 model tidak ada, timeout, dll).
+ * Satu-satunya pengecualian: masalah API key, karena semua model pasti gagal dengan key yang sama.
+ */
+function bisaPakaiModelLain(err) {
+  const status = err && err.status;
+  const pesan = String(err && err.message ? err.message : '');
+  if (status === 401 || status === 403) return false;
+  if (/API key/i.test(pesan)) return false;
+  return true;
+}
+
+/**
  * Kirim pesan user ke Gemini dengan system instruction yang sudah berisi data database.
+ * Kalau model utama sibuk, otomatis pindah ke model cadangan.
  */
 async function askGemini(userMessage) {
   const systemInstruction = await buildSystemInstruction(userMessage);
+  const daftarModel = [MODEL_NAME, ...FALLBACK_MODELS];
 
-  const model = genAI.getGenerativeModel({
-    model: MODEL_NAME,
-    systemInstruction,
-  });
-
-  const result = await model.generateContent(userMessage);
-  return result.response.text();
+  let errorUtama; // error dari model utama, paling informatif untuk ditampilkan kalau semua gagal
+  for (const namaModel of daftarModel) {
+    try {
+      // Argumen kedua = requestOptions: batas waktu tunggu per model
+      const model = genAI.getGenerativeModel(
+        { model: namaModel, systemInstruction },
+        { timeout: TIMEOUT_MS },
+      );
+      const result = await model.generateContent(userMessage);
+      if (namaModel !== MODEL_NAME) {
+        console.warn(`ℹ️  Memakai model cadangan: ${namaModel}`);
+      }
+      return result.response.text();
+    } catch (err) {
+      if (!errorUtama) errorUtama = err;
+      console.warn(`⚠️  Model ${namaModel} gagal (status: ${err && err.status}), mencoba model berikutnya...`);
+      if (!bisaPakaiModelLain(err)) throw err; // masalah API key: tidak ada gunanya pindah model
+    }
+  }
+  throw errorUtama;
 }
 
 module.exports = { askGemini, buildSystemInstruction, cariPesanan };

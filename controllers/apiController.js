@@ -1,5 +1,7 @@
 const LaundryModel = require('../models/laundryModel');
-const config = require('../config');
+// Catatan: '../config' mengekspor koneksi database, bukan appName.
+// appName ada di config/config.js.
+const config = require('../config/config');
 
 exports.status = (req, res) => {
   res.json({

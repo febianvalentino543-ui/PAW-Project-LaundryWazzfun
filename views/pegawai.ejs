@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= judul %></title>
+    <title>
+        <%= judul %>
+    </title>
     <!-- Menghubungkan CSS Eksternal khusus pegawai -->
     <link rel="stylesheet" href="/css/pegawai.css">
 </head>
+
 <body>
 
     <!-- Top Navigation Bar -->
@@ -26,14 +30,16 @@
         <aside class="sidebar">
             <h3>Menu Navigasi</h3>
             <ul class="filter-list">
-                <li class="filter-item active"><a href="/pegawai" style="text-decoration:none; color:inherit;">Portal Pegawai</a></li>
-                <li class="filter-item"><a href="/owner" style="text-decoration:none; color:inherit;">Owner Dashboard</a></li>
+                <li class="filter-item active"><a href="/pegawai" style="text-decoration:none; color:inherit;">Portal
+                        Pegawai</a></li>
+                <li class="filter-item"><a href="/owner" style="text-decoration:none; color:inherit;">Owner
+                        Dashboard</a></li>
             </ul>
         </aside>
 
         <!-- Main Workspace (Split View: Orders & WhatsApp AI Simulator) -->
         <main class="content-area-split">
-            
+
             <!-- Kolom Kiri: Daftar Pengerjaan Laundry -->
             <div class="workspace-orders">
                 <div class="workspace-header">
@@ -45,34 +51,49 @@
 
                 <!-- List Card Pesanan Pelanggan -->
                 <div class="orders-grid" id="ordersContainer">
-                    <% pesanan.forEach(item => { %>
+                    <% pesanan.forEach(item=> { %>
                         <div class="order-card" data-id="<%= item.id %>">
                             <div class="card-top">
                                 <div>
                                     <span class="order-id">#<%= item.id %></span>
-                                    <h3 class="client-name"><%= item.customerName %></h3>
+                                    <h3 class="client-name">
+                                        <%= item.customerName %>
+                                    </h3>
                                     <span class="client-phone">📱 <%= item.phone %></span>
                                 </div>
-                                <span class="status-pill status-diterima" id="badge-<%= item.id %>"><%= item.status %></span>
+                                <span class="status-pill status-diterima" id="badge-<%= item.id %>">
+                                    <%= item.status %>
+                                </span>
                             </div>
 
                             <div class="card-info">
-                                <p><strong>Paket:</strong> <%= item.service %></p>
-                                <p><strong>Jumlah/Catatan:</strong> <%= item.weightQty %></p>
-                                <p class="time-stamp">⏱️ Masuk: <%= item.enteredTime %></p>
+                                <p><strong>Paket:</strong>
+                                    <%= item.service %>
+                                </p>
+                                <p><strong>Jumlah/Catatan:</strong>
+                                    <%= item.weightQty %>
+                                </p>
+                                <p class="time-stamp">⏱️ Masuk: <%= item.createdAt ? new
+                                        Date(item.createdAt).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+                                        + ' WIB' : '-' %>
+                                </p>
                             </div>
 
                             <div class="step-control">
                                 <label>Update Status Pengerjaan:</label>
                                 <div class="step-buttons">
-                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Diterima')">Diterima</button>
-                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Dicuci')">Dicuci</button>
-                                    <button class="btn-step" onclick="updateStatus('<%= item.id %>', 'Sedang Disetrika')">Disetrika</button>
-                                    <button class="btn-step btn-complete" onclick="updateStatus('<%= item.id %>', 'Siap Diambil')">Siap Diambil</button>
+                                    <button class="btn-step"
+                                        onclick="updateStatus('<%= item.id %>', 'Diterima')">Diterima</button>
+                                    <button class="btn-step"
+                                        onclick="updateStatus('<%= item.id %>', 'Sedang Dicuci')">Dicuci</button>
+                                    <button class="btn-step"
+                                        onclick="updateStatus('<%= item.id %>', 'Sedang Disetrika')">Disetrika</button>
+                                    <button class="btn-step btn-complete"
+                                        onclick="updateStatus('<%= item.id %>', 'Siap Diambil')">Siap Diambil</button>
                                 </div>
                             </div>
                         </div>
-                    <% }); %>
+                        <% }); %>
                 </div>
             </div>
 
@@ -95,14 +116,16 @@
                     <div class="wa-chat-body" id="waChatBody">
                         <div class="wa-date-divider"><span>Hari Ini</span></div>
                         <div class="wa-bubble incoming">
-                            Halo! Saya Asisten Virtual Wazzfun Laundry. Ada yang bisa dibantu? Ketik nomor HP member Anda untuk mengecek status pesanan aktif. 😊
+                            Halo! Saya Asisten Virtual Wazzfun Laundry. Ada yang bisa dibantu? Ketik nomor HP member
+                            Anda untuk mengecek status pesanan aktif. 😊
                             <span class="wa-time">11:46</span>
                         </div>
                     </div>
 
                     <!-- WhatsApp Input Area -->
                     <div class="wa-footer">
-                        <input type="text" id="waInputMessage" placeholder="Ketik pesan atau No. HP member..." onkeypress="handleWaKeyPress(event)">
+                        <input type="text" id="waInputMessage" placeholder="Ketik pesan atau No. HP member..."
+                            onkeypress="handleWaKeyPress(event)">
                         <button onclick="sendWaMessage()" class="wa-send-btn">➤</button>
                     </div>
                 </div>
@@ -164,32 +187,47 @@
             chatBody.scrollTop = chatBody.scrollHeight;
 
             try {
-                // 3. Kirim fetch ke endpoint backend AI
+                // 3. Kirim fetch ke endpoint backend AI (batas tunggu 40 detik)
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 40000);
+
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: messageText })
+                    body: JSON.stringify({ message: messageText }),
+                    signal: controller.signal
                 });
+                clearTimeout(timer);
                 const data = await response.json();
 
                 // Hapus loading
                 document.getElementById('botLoading').remove();
 
-                // 4. Tampilkan balasan dari Gemini AI
+                // 4. Backend membalas { success, message, data: { reply } }
+                const teksBalasan = data.success && data.data && data.data.reply
+                    ? data.data.reply
+                    : (data.message || 'Maaf, terjadi kesalahan pada sistem.');
+
                 const botBubble = document.createElement('div');
                 botBubble.className = 'wa-bubble incoming';
-                botBubble.innerHTML = `${formatBotResponse(data.reply || data.pesan || 'Maaf, terjadi kesalahan pada sistem.')} <span class="wa-time">${timeString}</span>`;
+                botBubble.innerHTML = `${formatBotResponse(teksBalasan)} <span class="wa-time">${timeString}</span>`;
                 chatBody.appendChild(botBubble);
                 chatBody.scrollTop = chatBody.scrollHeight;
 
             } catch (error) {
                 console.error('Error chat:', error);
-                document.getElementById('botLoading').remove();
-                
+                const loading = document.getElementById('botLoading');
+                if (loading) loading.remove();
+
+                const pesanError = error.name === 'AbortError'
+                    ? 'Maaf, AI terlalu lama merespons. Coba lagi sebentar lagi.'
+                    : 'Maaf, koneksi ke server AI terganggu.';
+
                 const errBubble = document.createElement('div');
                 errBubble.className = 'wa-bubble incoming';
-                errBubble.innerHTML = `Maaf, koneksi ke server AI terganggu. <span class="wa-time">${timeString}</span>`;
+                errBubble.innerHTML = `${pesanError} <span class="wa-time">${timeString}</span>`;
                 chatBody.appendChild(errBubble);
+                chatBody.scrollTop = chatBody.scrollHeight;
             }
         }
 
@@ -208,4 +246,5 @@
         }
     </script>
 </body>
+
 </html>
