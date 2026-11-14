@@ -126,3 +126,31 @@ SELECT * FROM pesanan_laundry ORDER BY id DESC;
 <img width="3000" height="1876" alt="image" src="https://github.com/user-attachments/assets/02fd2893-64b4-4d52-8433-bea586cf13f2" />
 
 <img width="3000" height="1876" alt="image" src="https://github.com/user-attachments/assets/cfcd033b-306e-466c-a909-9535cbab5ecb" />
+
+# Wazzfun Laundry: Week 9 (Integrasi Generative AI)
+  
+### ✨ Fitur AI
+- **Chatbot "Wazzfun CS Bot"** pada halaman Portal Pegawai (`/pegawai`).
+- **Context-based response**: jawaban hanya berdasarkan data pesanan pada aplikasi (nama pelanggan, nomor nota, status, paket, berat).
+- **Guardrail**: pertanyaan di luar konteks (misalnya "buatkan kode program untuk membuat game") ditolak dengan sopan dan pengguna diarahkan kembali ke topik layanan laundry.
+- **Validasi input** di backend: pesan kosong dan batas panjang pesan.
+- **Penanganan error**: kegagalan API Gemini, respons kosong, dan koneksi gagal ditampilkan sebagai pesan yang ramah di frontend.
+- **Indikator loading** saat AI memproses pertanyaan.
+- **Responsif** untuk desktop dan mobile.
+ 
+### 💬 Implementasi Frontend
+
+- Komponen chatbot ditampilkan di samping daftar pengerjaan pada halaman Portal Pegawai.
+- Input pesan dan tombol kirim, dengan tampilan bubble chat untuk pesan pengguna dan balasan AI.
+- Menggunakan **Fetch API** untuk memanggil `POST /api/chat`.
+- Menampilkan indikator loading saat menunggu respons.
+- Menampilkan pesan error jika request gagal atau layanan Gemini tidak tersedia.
+
+### 🔒 Keamanan
+ 
+- API Key Gemini hanya berada di `.env` dan dibaca oleh backend.
+- `.env` **tidak boleh** diunggah ke repository publik.
+- Jika API Key sempat ter-commit, segera buat ulang (regenerate) key di Google AI Studio.
+
+### Hasil Pengujian
+<img width="3000" height="1780" alt="image" src="https://github.com/user-attachments/assets/93a38f53-808f-4982-a189-864bbde093d8" />
